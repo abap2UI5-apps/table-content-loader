@@ -1,2 +1,6 @@
-# a2UI5_app-db_editor
-Upload, Edit &amp; Download DB Tables
+# abap2UI5 - DB Editor App
+Upload, Edit & Download DB Tables
+
+Dependencies:
+* abap2UI5
+* S-RTTI
