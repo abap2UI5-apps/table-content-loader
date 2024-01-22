@@ -68,7 +68,7 @@ CLASS Z2UI5_DBT_CL_APP_01 IMPLEMENTATION.
         FIELD-SYMBOLS <tab> TYPE STANDARD TABLE.
         CREATE DATA mt_table TYPE STANDARD TABLE OF (mv_name) WITH DEFAULT KEY.
         ASSIGN mt_table->* TO <tab>.
-        mt_cols = z2ui5_cl_tool_utility=>get_fieldlist_by_table( <tab> ).
+        mt_cols = z2ui5_dbt_cl_utility=>get_fieldlist_by_table( <tab> ).
 
 
       WHEN 'BUTTON_POST'.
@@ -147,7 +147,7 @@ CLASS Z2UI5_DBT_CL_APP_01 IMPLEMENTATION.
 
       FIELD-SYMBOLS <tab> TYPE STANDARD TABLE.
       ASSIGN mt_table->* TO <tab>.
-      mt_cols = z2ui5_cl_tool_utility=>get_fieldlist_by_table( <tab> ).
+      mt_cols = z2ui5_dbt_cl_utility=>get_fieldlist_by_table( <tab> ).
 
       mt_range = VALUE #( FOR line IN mt_cols ( name = line ) ).
 
