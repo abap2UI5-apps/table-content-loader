@@ -26,28 +26,76 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
               title          = 'abap2UI5 - DB Loader'
               navbuttonpress = client->_event( 'BACK' )
               shownavbutton  = abap_true ).
-
+    page = page->vbox( ).
+    page = page->hbox( ).
       page->generic_tile(
          class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-         header    = `Upload DB Table`
-         subheader    = `CSV & JSON`
+         header    = `JSON File`
+         subheader    = `Upload DB Content`
+         press     = client->_event( `z2ui5_file_cl_app_01` )
+      )->get( )->tile_content(
+        )->image_content( src = 'sap-icon://upload' ).
+
+   page->generic_tile(
+         class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+         header    = `JSON Editor`
+         subheader    = `Upload DB Content`
          press     = client->_event( `z2ui5_file_cl_app_01` )
       )->get( )->tile_content(
         )->image_content( src = 'sap-icon://upload' ).
 
       page->generic_tile(
          class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-         header    = `DB Table Editor`
-         subheader    = `CSV & JSON`
+         header    = `CSV File`
+         subheader    = `Upload DB Content`
          press     = client->_event( `z2ui5_file_cl_app_01` )
+          enablenavigationbutton = abap_false
+        state  = 'Disabled'
       )->get( )->tile_content(
         )->image_content( src = 'sap-icon://upload' ).
+
+   page->generic_tile(
+         class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+         header    = `CSV Editor`
+         subheader    = `Upload DB Content`
+         press     = client->_event( `z2ui5_file_cl_app_01` )
+         state  = 'Disabled'
+      )->get( )->tile_content(
+        )->image_content( src = 'sap-icon://upload' ).
+
+    page = page->get_parent( )->hbox( ).
 
       page->generic_tile(
         class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-        header    = `View, Change & Download`
-*        subheader    = `on-premise only`
+        header    = `JSON File`
+        subheader    = `Download DB Content`
          press     = client->_event( `z2ui5_xlsx_cl_app_02` )
+      )->get( )->tile_content(
+         )->image_content( src = 'sap-icon://download' ).
+
+      page->generic_tile(
+        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+        header    = `JSON Editor`
+        subheader    = `Download DB Content`
+         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
+      )->get( )->tile_content(
+         )->image_content( src = 'sap-icon://download' ).
+
+      page->generic_tile(
+        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+        header    = `CSV File`
+        subheader    = `Download DB Content`
+         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
+            state  = 'Disabled'
+      )->get( )->tile_content(
+         )->image_content( src = 'sap-icon://download' ).
+
+      page->generic_tile(
+        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+        header    = `CSV Editor`
+        subheader    = `Download DB Content`
+         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
+            state  = 'Disabled'
       )->get( )->tile_content(
          )->image_content( src = 'sap-icon://download' ).
 
