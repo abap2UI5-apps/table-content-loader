@@ -1,5 +1,5 @@
 # a2UI5 App - DB Table Loader
-Upload & Download DB Entries (JSON, CSV), browser-based
+Upload & Download DB Entries (JSON, CSV)
 
 
 #### Features
@@ -7,6 +7,7 @@ Upload & Download DB Entries (JSON, CSV), browser-based
 * Download DB Entries in JSON & CSV Format
 * CSV & JSON Editor
 * Data Preview
+* browser-based
 
 #### Compatibility:
 * S/4 Public Cloud (ABAP Cloud)
