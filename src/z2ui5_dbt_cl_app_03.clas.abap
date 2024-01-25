@@ -47,8 +47,8 @@ CLASS Z2UI5_DBT_CL_APP_03 IMPLEMENTATION.
             SPLIT mv_value AT `;` INTO DATA(lv_dummy) DATA(lv_data).
             SPLIT lv_data AT `,` INTO lv_dummy lv_data.
 
-            DATA(lv_data2) = z2ui5_dbt_cl_utility=>decode_x_base64( lv_data ).
-            DATA(lv_ready) = z2ui5_dbt_cl_utility=>get_string_by_xstring( lv_data2 ).
+            DATA(lv_data2) = z2ui5_cl_util_func=>decode_x_base64( lv_data ).
+            DATA(lv_ready) = z2ui5_cl_util_func=>get_string_by_xstring( lv_data2 ).
 
             mr_table = z2ui5_cl_tool_utility=>get_table_by_csv( lv_ready ).
             client->message_box_display( `CSV loaded to table` ).
@@ -106,9 +106,10 @@ CLASS Z2UI5_DBT_CL_APP_03 IMPLEMENTATION.
     FIELD-SYMBOLS <tab> type table.
   assign mr_table->* to <tab>.
       mv_check_download = abap_false.
-      DATA(lv_csv) = z2ui5_dbt_cl_utility=>get_csv_by_table( <tab> ).
-      DATA(lv_xcsv) = z2ui5_dbt_cl_utility=>get_xstring_by_string( lv_csv ).
-      DATA(LV_base) = z2ui5_dbt_cl_utility=>encode_x_base64( lv_xcsv ).
+
+      DATA(lv_csv) = z2ui5_cl_util_func=>get_csv_by_table( <tab> ).
+      DATA(lv_xcsv) = z2ui5_cl_util_func=>get_xstring_by_string( lv_csv ).
+      DATA(LV_base) = z2ui5_cl_util_func=>encode_x_base64( lv_xcsv ).
       view->_cc_plain_xml( '<html:iframe src="data:text/csv;base64,' && LV_base && '" height="0%" width="0%"/>' ).
     ENDIF.
 

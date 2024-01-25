@@ -1,28 +1,29 @@
-CLASS z2ui5_dbt_cl_app_01 DEFINITION PUBLIC.
+class Z2UI5_DBT_CL_APP_01 definition
+  public
+  create public .
 
-  PUBLIC SECTION.
+public section.
 
-    INTERFACES z2ui5_if_app.
+  interfaces Z2UI5_IF_APP .
+  interfaces IF_SERIALIZABLE_OBJECT .
 
-    DATA mt_table TYPE REF TO data.
-    DATA mt_cols TYPE string_table.
-    DATA mv_name TYPE string.
-
-    TYPES:
-      BEGIN OF ty_s_range,
+  types:
+    BEGIN OF ty_s_range,
         name    TYPE string,
         value   TYPE string,
         t_range TYPE RANGE OF string,
-      END OF ty_s_range.
+      END OF ty_s_range .
 
-    DATA mt_range TYPE STANDARD TABLE OF ty_s_range.
-    DATA:
-      BEGIN OF ms_app,
+  data MT_TABLE type ref to DATA .
+  data MT_COLS type STRING_TABLE .
+  data MV_NAME type STRING .
+  data:
+    mt_range TYPE STANDARD TABLE OF ty_s_range .
+  data:
+    BEGIN OF ms_app,
         max_rows TYPE string,
         file     TYPE string,
-      END OF ms_app.
-
-
+      END OF ms_app .
   PROTECTED SECTION.
 
     DATA client TYPE REF TO z2ui5_if_client.
@@ -43,7 +44,7 @@ ENDCLASS.
 
 
 
-CLASS z2ui5_dbt_cl_app_01 IMPLEMENTATION.
+CLASS Z2UI5_DBT_CL_APP_01 IMPLEMENTATION.
 
 
   METHOD z2ui5_if_app~main.
@@ -85,7 +86,8 @@ CLASS z2ui5_dbt_cl_app_01 IMPLEMENTATION.
         FIELD-SYMBOLS <tab> TYPE STANDARD TABLE.
         CREATE DATA mt_table TYPE STANDARD TABLE OF (mv_name) WITH DEFAULT KEY.
         ASSIGN mt_table->* TO <tab>.
-        mt_cols = z2ui5_dbt_cl_utility=>get_fieldlist_by_table( <tab> ).
+*        mt_cols = z2ui5_dbt_cl_utility=>get_fieldlist_by_table( <tab> ).
+        mt_cols = value #( for row in z2ui5_cl_util_func=>rtti_get_t_comp_by_data( <tab> ) ( row-name ) ).
 
 
       WHEN 'BUTTON_POST'.
