@@ -32,7 +32,7 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
          class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
          header    = `JSON File`
          subheader    = `Upload DB Content`
-         press     = client->_event( `z2ui5_file_cl_app_01` )
+         press     = client->_event( `z2ui5_dbl_cl_app_01` )
       )->get( )->tile_content(
         )->image_content( src = 'sap-icon://upload' ).
 

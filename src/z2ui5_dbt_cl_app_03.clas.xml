@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_DBT_CL_APP_03</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>dbt - upload</DESCRIPT>
+    <DESCRIPT>dbt - download itab csv/json</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

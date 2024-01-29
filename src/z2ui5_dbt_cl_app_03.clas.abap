@@ -1,185 +1,202 @@
-CLASS z2ui5_dbt_cl_app_03 DEFINITION PUBLIC.
+CLASS z2ui5_dbt_cl_app_03 DEFINITION
+  PUBLIC
+  CREATE PUBLIC .
 
   PUBLIC SECTION.
 
     INTERFACES z2ui5_if_app.
 
-    DATA mv_path TYPE string.
-    DATA mv_value TYPE string.
-    DATA mr_table TYPE REF TO data.
-    DATA mv_check_edit TYPE abap_bool.
-    DATA mv_check_download TYPE abap_bool.
+    CLASS-METHODS factory_popup_by_itab
+      IMPORTING
+        itab            TYPE data
+      RETURNING
+        VALUE(result) TYPE REF TO z2ui5_dbt_cl_app_03.
+
+    DATA:
+      BEGIN OF ms_app,
+        check_initialized     TYPE abap_bool,
+        check_popup           TYPE abap_bool,
+        itab                  TYPE REF TO data,
+        max_rows              TYPE string,
+        file                  TYPE string,
+        file_size             TYPE string,
+        file_entries          TYPE string,
+        check_appwidthlimited TYPE abap_bool VALUE abap_true,
+        db_table              TYPE string VALUE 'z2ui5_dbl_t_01',
+        db_table_entries      TYPE string,
+      END OF ms_app.
+
+    DATA mt_tab TYPE REF TO data.
 
   PROTECTED SECTION.
 
     DATA client TYPE REF TO z2ui5_if_client.
-    DATA check_initialized TYPE abap_bool.
 
-    METHODS ui5_on_init.
-    METHODS ui5_on_event.
-
-    METHODS ui5_view_main_display.
-
-    METHODS ui5_view_init_display.
+    METHODS z2ui5_on_init.
+    METHODS z2ui5_on_event.
+    METHODS z2ui5_view_display.
 
   PRIVATE SECTION.
+    DATA mv_db_save_callback TYPE string.
 ENDCLASS.
 
 
 
-CLASS Z2UI5_DBT_CL_APP_03 IMPLEMENTATION.
+CLASS z2ui5_dbt_cl_app_03 IMPLEMENTATION.
 
+  METHOD factory_popup_by_itab.
 
-  METHOD ui5_on_event.
-    TRY.
-
-        CASE client->get( )-event.
-
-          WHEN 'START' OR 'CHANGE'.
-            ui5_view_main_display( ).
-
-          WHEN 'DOWNLOAD'.
-            mv_check_download = abap_true.
-            ui5_view_main_display( ).
-
-          WHEN 'UPLOAD'.
-
-            SPLIT mv_value AT `;` INTO DATA(lv_dummy) DATA(lv_data).
-            SPLIT lv_data AT `,` INTO lv_dummy lv_data.
-
-            DATA(lv_data2) = z2ui5_cl_util_func=>conv_decode_x_base64( lv_data ).
-            DATA(lv_ready) = z2ui5_cl_util_func=>conv_get_string_by_xstring( lv_data2 ).
-
-            mr_table = z2ui5_cl_tool_utility=>get_table_by_csv( lv_ready ).
-            client->message_box_display( `CSV loaded to table` ).
-
-            ui5_view_main_display( ).
-
-            CLEAR mv_value.
-            CLEAR mv_path.
-
-          WHEN 'BACK'.
-            client->nav_app_leave( client->get_app( client->get( )-s_draft-id_prev_app_stack ) ).
-
-        ENDCASE.
-
-      CATCH cx_root INTO DATA(x).
-        client->message_box_display( text = x->get_text( ) type = `error` ).
-    ENDTRY.
-
-  ENDMETHOD.
-
-
-  METHOD ui5_on_init.
-
-    ui5_view_init_display( ).
-
-  ENDMETHOD.
-
-
-  METHOD ui5_view_init_display.
-
-  ui5_view_main_display( ).
-
-*    client->view_display( z2ui5_cl_xml_view=>factory( client
-*         )->_z2ui5( )->timer(  client->_event( `START` )
-*         )->_generic( ns = `html` name = `script` )->_cc_plain_xml( z2ui5_cl_cc_file_uploader=>get_js( )
-*         )->stringify( ) ).
-
-  ENDMETHOD.
-
-
-  METHOD ui5_view_main_display.
-
-    DATA(view) = z2ui5_cl_xml_view=>factory( client ).
-    DATA(page) = view->shell( )->page(
-            title          = 'abap2UI5 - CSV to ABAP internal Table'
-            navbuttonpress = client->_event( 'BACK' )
-            shownavbutton  = abap_true
-        )->header_content(
-            )->toolbar_spacer(
-*            )->link( text = 'Source_Code' target = '_blank' href = view->hlp_get_source_code_url(  )
-        )->get_parent( ).
-
-    IF mv_check_download = abap_true.
-
-    FIELD-SYMBOLS <tab> type table.
-  assign mr_table->* to <tab>.
-      mv_check_download = abap_false.
-
-      DATA(lv_csv) = z2ui5_cl_util_func=>itab_get_csv_by_itab( <tab> ).
-      DATA(lv_xcsv) = z2ui5_cl_util_func=>conv_get_xstring_by_string( lv_csv ).
-      DATA(LV_base) = z2ui5_cl_util_func=>conv_encode_x_base64( lv_xcsv ).
-      view->_cc_plain_xml( '<html:iframe src="data:text/csv;base64,' && LV_base && '" height="0%" width="0%"/>' ).
-    ENDIF.
-
-    IF mr_table IS NOT INITIAL.
-  assign mr_table->* to <tab>.
-
-      DATA(tab) = page->table(
-              items = COND #( WHEN mv_check_edit = abap_true THEN client->_bind_edit( <tab> ) ELSE client->_bind_edit( <tab> ) )
-          )->header_toolbar(
-              )->overflow_toolbar(
-                  )->title( 'CSV Content'
-                  )->toolbar_spacer(
-                  )->switch(
-                        change        = client->_event( `CHANGE` )
-                        state         = client->_bind_edit( mv_check_edit )
-                        customtexton  = 'Edit'
-                        customtextoff = 'View'
-          )->get_parent( )->get_parent( ).
-
-
-      DATA(lr_fields) = z2ui5_cl_tool_utility=>get_fieldlist_by_table( <tab> ).
-      DATA(lo_cols) = tab->columns( ).
-      LOOP AT lr_fields REFERENCE INTO DATA(lr_col).
-        lo_cols->column( )->text( lr_col->* ).
-      ENDLOOP.
-      DATA(lo_cells) = tab->items( )->column_list_item( )->cells( ).
-      LOOP AT lr_fields REFERENCE INTO lr_col.
-        IF mv_check_edit = abap_true.
-          lo_cells->input( `{` && lr_col->* && `}` ).
-        ELSE.
-          lo_cells->text( `{` && lr_col->* && `}` ).
-        ENDIF.
-      ENDLOOP.
-    ENDIF.
-
-    DATA(footer) = page->footer( )->overflow_toolbar( ).
-
-    footer->_z2ui5( )->file_uploader(
-      value       = client->_bind_edit( mv_value )
-      path        = client->_bind_edit( mv_path )
-      placeholder = 'filepath here...'
-      upload      = client->_event( 'UPLOAD' ) ).
-
-    footer->toolbar_spacer(
-        )->button(
-           text  = 'Download CSV'
-           press = client->_event( 'DOWNLOAD' )
-           type  = 'Emphasized'
-           icon  = 'sap-icon://download' ).
-
-    client->view_display( view->stringify( ) ).
+    result = NEW #( ).
+    result->ms_app-itab = z2ui5_cl_util_func=>conv_copy_ref_data( itab ).
+    result->ms_app-check_popup = abap_true.
 
   ENDMETHOD.
 
 
   METHOD z2ui5_if_app~main.
 
-    me->client = client.
+    me->client     = client.
 
-    IF check_initialized = abap_false.
-      check_initialized = abap_true.
-      ui5_on_init( ).
+    IF ms_app-check_initialized = abap_false.
+      ms_app-check_initialized = abap_true.
+      z2ui5_on_init( ).
       RETURN.
     ENDIF.
 
     IF client->get( )-check_on_navigated = abap_true.
-      ui5_view_main_display( ).
+      z2ui5_view_display( ).
     ENDIF.
 
-    ui5_on_event( ).
+    IF client->get( )-event IS NOT INITIAL.
+      z2ui5_on_event( ).
+    ENDIF.
 
+  ENDMETHOD.
+
+
+  METHOD z2ui5_on_event.
+
+    CASE client->get( )-event.
+
+      WHEN 'DB_CHECK'.
+
+        TRY.
+            ms_app-db_table = to_upper( ms_app-db_table ).
+
+            SELECT SINGLE COUNT( * )
+            FROM (ms_app-db_table)
+            INTO ms_app-db_table_entries.
+
+            IF to_upper( ms_app-db_table(1) ) <>  `Z` AND to_upper( ms_app-db_table(1) ) <> `Y`.
+              client->message_box_display( `Only Tables in namespace Z or Y allowed` ).
+            ENDIF.
+
+            client->view_model_update( ).
+          CATCH cx_root.
+            client->message_box_display( `DB Table no found, check input: ` && ms_app-db_table ).
+        ENDTRY.
+
+      WHEN `PROCESS`.
+
+        FIELD-SYMBOLS <tab2> TYPE STANDARD TABLE.
+
+        CREATE DATA mt_tab TYPE STANDARD TABLE OF (ms_app-db_table).
+        ASSIGN mt_tab->* TO <tab2>.
+
+        SELECT *
+        FROM (ms_app-db_table)
+        INTO CORRESPONDING FIELDS OF TABLE <tab2>.
+
+        TRY.
+
+            ms_app-file = z2ui5_cl_util_func=>trans_json_by_any( <tab2> ).
+            client->message_toast_display( |JSON created| ).
+
+          CATCH cx_root INTO DATA(x).
+            client->message_box_display( x->get_text( ) ).
+        ENDTRY.
+
+      WHEN `PREVIEW`.
+
+        CREATE DATA mt_tab TYPE STANDARD TABLE OF (ms_app-db_table).
+        ASSIGN mt_tab->* TO <tab2>.
+
+        SELECT *
+        FROM (ms_app-db_table)
+        INTO CORRESPONDING FIELDS OF TABLE <tab2>
+        UP TO 10 ROWS.
+
+        DATA(lv_prev_json) = z2ui5_cl_util_func=>trans_json_by_any( <tab2> ).
+        client->nav_app_call( z2ui5_cl_popup_textedit=>factory( lv_prev_json ) ).
+
+      WHEN 'DOWNLOAD'.
+        client->nav_app_call( z2ui5_cl_popup_file_download=>factory( ms_app-file ) ).
+
+      WHEN 'BUTTON_CANCEL'.
+        client->message_toast_display( |cancel| ).
+
+      WHEN 'BACK'.
+        client->nav_app_leave( client->get_app( client->get( )-s_draft-id_prev_app_stack ) ).
+
+    ENDCASE.
+
+  ENDMETHOD.
+
+
+  METHOD z2ui5_on_init.
+
+    z2ui5_view_display( ).
+
+  ENDMETHOD.
+
+
+  METHOD z2ui5_view_display.
+
+
+
+    IF ms_app-check_popup = abap_true.
+     DATA(view) = z2ui5_cl_xml_view=>factory_popup( ).
+      DATA(page) = view->dialog( ).
+    ELSE.
+     view = z2ui5_cl_xml_view=>factory( ).
+      page = view->shell( appwidthlimited = client->_bind_edit( ms_app-check_appwidthlimited ) )->page(
+                  title          = 'a2UI5 App - JSON File Download'
+                  navbuttonpress = client->_event( 'BACK' )
+                  shownavbutton = xsdbool( client->get( )-s_draft-id_prev_app_stack IS NOT INITIAL )
+            )->header_content(
+                 )->overflow_toolbar(
+                 )->toolbar_spacer(
+                  )->label( `Shell`
+                  )->switch( state = client->_bind_edit( ms_app-check_appwidthlimited )
+                  )->link(
+                      text = 'Project on GitHub'
+                      target = '_blank'
+                      href = `https://github.com/oblomov-dev/a2UI5-db_table_loader`
+                  )->get_parent(  )->get_parent( ).
+    ENDIF.
+
+    DATA(content) = page->simple_form( editable = `true` ).
+
+    content->label( `(2) Check DB Table`
+    )->input( width = `30%` description =  `DB Table` value = client->_bind_edit( ms_app-db_table )
+     )->label(
+    )->button( text = `Go` width = `10%` press = client->_event( `DB_CHECK` )
+    )->label(
+    )->input( width = `30%` description = `DB Entries` value = client->_bind_edit( ms_app-db_table_entries ) enabled = abap_false
+    )->label( `(3) DB -> JSON`
+   )->button( text = `Go` width = `10%` press = client->_event( `PROCESS` )
+    )->label(
+    )->input( width = `30%` description = `Number of Entries` value = client->_bind_edit( ms_app-file_entries )  enabled = abap_false
+    )->label( `(4) Preview JSON`
+     )->button( text = `Go` width = `10%` press = client->_event( `PREVIEW` )
+   )->label( `(5) Export`
+   )->button( text = `Run` width = `10%` press = client->_event( `DOWNLOAD` )
+   ).
+
+    IF ms_app-check_popup = abap_true.
+      client->popup_display( view->stringify( ) ).
+    ELSE.
+      client->view_display( view->stringify( ) ).
+    ENDIF.
   ENDMETHOD.
 ENDCLASS.
