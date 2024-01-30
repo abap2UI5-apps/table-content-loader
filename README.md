@@ -1,5 +1,5 @@
 # a2UI5 App - DB Table Loader
-Upload & Download DB Entries (JSON, CSV)
+Upload, Edit & Download Table Content (CSV, JSON)
 
 
 #### Features
