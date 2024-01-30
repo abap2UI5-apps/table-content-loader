@@ -4,7 +4,7 @@ Upload, Edit & Download Table Content (CSV, JSON)
 
 #### Features
 * Upload JSON & CSV Files
-* Download DB Entries in JSON & CSV Format
+* Download Table Entries in JSON & CSV Format
 * CSV & JSON Editor
 * Data Preview
 * browser-based
