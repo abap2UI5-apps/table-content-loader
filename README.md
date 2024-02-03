@@ -7,7 +7,7 @@ Upload, Edit & Download Table Content (CSV, JSON)
 * Download Table Entries in JSON & CSV Format
 * CSV & JSON Editor
 * Data Preview
-* browser-based
+* Browser-based
 
 #### Compatibility:
 * S/4 Public Cloud (ABAP Cloud)
