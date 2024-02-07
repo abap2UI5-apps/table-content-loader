@@ -111,7 +111,7 @@ CLASS Z2UI5_DBL_CL_APP_01 IMPLEMENTATION.
             CREATE DATA mt_tab TYPE STANDARD TABLE OF (ms_app-db_table).
             ASSIGN mt_tab->* TO <tab2>.
 
-            z2ui5_cl_util_func=>trans_json_2_any(
+            z2ui5_cl_util=>json_parse(
               EXPORTING
                 val  = ms_app-file
               CHANGING
@@ -132,7 +132,7 @@ CLASS Z2UI5_DBL_CL_APP_01 IMPLEMENTATION.
         DATA lr_dummy TYPE REF TO data.
         CREATE DATA lr_tab TYPE STANDARD TABLE OF (ms_app-db_table).
 
-        lr_tab = z2ui5_cl_util_func=>conv_copy_ref_data( mt_tab ).
+        lr_tab = z2ui5_cl_util=>conv_copy_ref_data( mt_tab ).
 
         ASSIGN lr_tab->* TO <tab2>.
         LOOP AT <tab2> REFERENCE INTO lr_dummy.

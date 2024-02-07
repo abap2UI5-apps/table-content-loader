@@ -159,7 +159,7 @@ CLASS Z2UI5_DBT_CL_APP_02 IMPLEMENTATION.
 
   METHOD z2ui5_on_render_view_edit.
 
-    DATA(page) = Z2UI5_CL_XML_VIEW=>factory( client )->shell(
+    DATA(page) = Z2UI5_CL_XML_VIEW=>factory( )->shell(
        )->page(
                title          = 'abap2ui5 - Table Maintenance'
                navbuttonpress = client->_event( 'BACK' )
@@ -247,7 +247,7 @@ CLASS Z2UI5_DBT_CL_APP_02 IMPLEMENTATION.
 
   METHOD z2ui5_on_render_view_export.
 
-    DATA(page) = Z2UI5_CL_XML_VIEW=>factory( client )->shell(
+    DATA(page) = Z2UI5_CL_XML_VIEW=>factory(  )->shell(
     )->page(
             title          = 'abap2ui5 - Table Maintenance'
             navbuttonpress = client->_event( 'BACK' )
@@ -311,7 +311,7 @@ CLASS Z2UI5_DBT_CL_APP_02 IMPLEMENTATION.
 
   METHOD z2ui5_on_render_view_import.
 
-    DATA(page) = Z2UI5_CL_XML_VIEW=>factory( client )->shell(
+    DATA(page) = Z2UI5_CL_XML_VIEW=>factory( )->shell(
     )->page(
             title          = 'abap2UI5 - Table Maintenance'
             navbuttonpress = client->_event( 'BACK' )

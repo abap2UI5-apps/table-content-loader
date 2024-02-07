@@ -47,7 +47,7 @@ CLASS z2ui5_dbt_cl_app_03 IMPLEMENTATION.
   METHOD factory_popup_by_itab.
 
     result = NEW #( ).
-    result->ms_app-itab = z2ui5_cl_util_func=>conv_copy_ref_data( itab ).
+    result->ms_app-itab = z2ui5_cl_util=>conv_copy_ref_data( itab ).
     result->ms_app-check_popup = abap_true.
 
   ENDMETHOD.
@@ -109,7 +109,7 @@ CLASS z2ui5_dbt_cl_app_03 IMPLEMENTATION.
 
         TRY.
 
-            ms_app-file = z2ui5_cl_util_func=>trans_json_by_any( <tab2> ).
+            ms_app-file = z2ui5_cl_util=>json_stringify( <tab2> ).
             client->message_toast_display( |JSON created| ).
 
           CATCH cx_root INTO DATA(x).
@@ -126,7 +126,7 @@ CLASS z2ui5_dbt_cl_app_03 IMPLEMENTATION.
         INTO CORRESPONDING FIELDS OF TABLE <tab2>
         UP TO 10 ROWS.
 
-        DATA(lv_prev_json) = z2ui5_cl_util_func=>trans_json_by_any( <tab2> ).
+        DATA(lv_prev_json) = z2ui5_cl_util=>json_stringify( <tab2> ).
         client->nav_app_call( z2ui5_cl_popup_textedit=>factory( lv_prev_json ) ).
 
       WHEN 'DOWNLOAD'.

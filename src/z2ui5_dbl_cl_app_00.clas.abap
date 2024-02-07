@@ -20,7 +20,7 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
 
     IF client->get( )-check_on_navigated = abap_true.
 
-      DATA(view) = z2ui5_cl_xml_view=>factory( client ).
+      DATA(view) = z2ui5_cl_xml_view=>factory( ).
 
       DATA(page) = view->shell( )->page(
               title          = 'abap2UI5 - DB Loader'

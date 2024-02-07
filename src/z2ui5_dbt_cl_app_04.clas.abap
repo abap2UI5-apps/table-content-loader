@@ -47,10 +47,10 @@ CLASS Z2UI5_DBT_CL_APP_04 IMPLEMENTATION.
             SPLIT mv_value AT `;` INTO DATA(lv_dummy) DATA(lv_data).
             SPLIT lv_data AT `,` INTO lv_dummy lv_data.
 
-            DATA(lv_data2) = z2ui5_cl_util_func=>conv_decode_x_base64( lv_data ).
-            DATA(lv_ready) = z2ui5_cl_util_func=>conv_get_string_by_xstring( lv_data2 ).
+            DATA(lv_data2) = z2ui5_cl_util=>conv_decode_x_base64( lv_data ).
+            DATA(lv_ready) = z2ui5_cl_util=>conv_get_string_by_xstring( lv_data2 ).
 
-            mr_table = z2ui5_cl_util_func=>itab_get_itab_by_csv( lv_ready ).
+            mr_table = z2ui5_cl_util=>itab_get_itab_by_csv( lv_ready ).
             client->message_box_display( `CSV loaded to table` ).
 
             ui5_view_main_display( ).
@@ -86,7 +86,7 @@ CLASS Z2UI5_DBT_CL_APP_04 IMPLEMENTATION.
 
   METHOD ui5_view_main_display.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( client ).
+    DATA(view) = z2ui5_cl_xml_view=>factory(  ).
     DATA(page) = view->shell( )->page(
             title          = 'abap2UI5 - CSV to ABAP internal Table'
             navbuttonpress = client->_event( 'BACK' )
@@ -101,9 +101,9 @@ CLASS Z2UI5_DBT_CL_APP_04 IMPLEMENTATION.
     FIELD-SYMBOLS <tab> type table.
   assign mr_table->* to <tab>.
       mv_check_download = abap_false.
-      DATA(lv_csv) = z2ui5_cl_util_func=>itab_get_csv_by_itab( <tab> ).
-      DATA(lv_xcsv) = z2ui5_cl_util_func=>conv_get_xstring_by_string( lv_csv ).
-      DATA(LV_base) = z2ui5_cl_util_func=>conv_encode_x_base64( lv_xcsv ).
+      DATA(lv_csv) = z2ui5_cl_util=>itab_get_csv_by_itab( <tab> ).
+      DATA(lv_xcsv) = z2ui5_cl_util=>conv_get_xstring_by_string( lv_csv ).
+      DATA(LV_base) = z2ui5_cl_util=>conv_encode_x_base64( lv_xcsv ).
       view->_cc_plain_xml( '<html:iframe src="data:text/csv;base64,' && LV_base && '" height="0%" width="0%"/>' ).
     ENDIF.
 
@@ -124,7 +124,7 @@ CLASS Z2UI5_DBT_CL_APP_04 IMPLEMENTATION.
           )->get_parent( )->get_parent( ).
 
 
-      DATA(lr_fields) = value string_table( for row in z2ui5_cl_util_func=>rtti_get_t_comp_by_data( <tab> ) ( row-name ) ).
+      DATA(lr_fields) = value string_table( for row in z2ui5_cl_util=>rtti_get_t_comp_by_data( <tab> ) ( row-name ) ).
       DATA(lo_cols) = tab->columns( ).
       LOOP AT lr_fields REFERENCE INTO DATA(lr_col).
         lo_cols->column( )->text( lr_col->* ).
