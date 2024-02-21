@@ -20,6 +20,7 @@ Upload, Edit & Download Table Content (CSV, JSON)
 
 #### TODO
 * CSV Handling
+* Editor Fucnitonality
 
 #### Contribution & Support
 Pull Requests are welcome! Whether you're fixing a bug, adding new functionality, or improving the documentation, your contributions are always appreciated. If you run into problems, feel free to open an issue.
