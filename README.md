@@ -1,5 +1,5 @@
-# a2UI5 App - DB Table Loader
-Upload, Edit & Download Table Content (CSV, JSON)
+# a2UI5 App - DB Conetent Loader
+Upload, Edit & Download Table Content (CSV, JSON, XLSX)
 
 
 #### Features
@@ -20,6 +20,7 @@ Upload, Edit & Download Table Content (CSV, JSON)
 
 #### TODO
 * CSV Handling
+* XLSX Handling
 * Editor Functionality
 
 #### Contribution & Support
