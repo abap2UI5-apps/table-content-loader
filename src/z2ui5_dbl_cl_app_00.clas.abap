@@ -99,6 +99,22 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
       )->get( )->tile_content(
          )->image_content( src = 'sap-icon://download' ).
 
+      page->generic_tile(
+         class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+         header    = `Upload Excel Files`
+         subheader    = `to the Database`
+         press     = client->_event( `z2ui5_xlsx_cl_app_01` )
+      )->get( )->tile_content(
+        )->image_content( src = 'sap-icon://upload' ).
+
+      page->generic_tile(
+        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+        header    = `Download DB Tables`
+        subheader    = `in XLSX Format`
+         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
+      )->get( )->tile_content(
+         )->image_content( src = 'sap-icon://download' ).
+
       client->view_display( view->stringify( ) ).
 
     ENDIF.
