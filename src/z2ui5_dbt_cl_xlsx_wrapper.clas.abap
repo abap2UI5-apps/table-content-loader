@@ -5,6 +5,9 @@ CLASS z2ui5_dbt_cl_xlsx_wrapper DEFINITION
 
   PUBLIC SECTION.
 
+    TYPES ty_t_xlsx TYPE zexcel_t_fieldcatalog.
+    TYPES ty_s_xlsx_settings TYPE zexcel_s_table_settings.
+
     CLASS-METHODS get_table_by_xlsx
       IMPORTING
         val           TYPE xstring
