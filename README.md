@@ -1,4 +1,4 @@
-# App - Table Content Loader
+# Table Content Loader
 Upload, Edit & Download Table Content
 Supported Formats: JSON, CSV
 
