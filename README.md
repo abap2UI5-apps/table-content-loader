@@ -1,4 +1,4 @@
-# a2UI5 App - Table Content Loader
+# App - Table Content Loader
 Upload, Edit & Download Table Content
 Supported Formats: JSON, CSV
 
