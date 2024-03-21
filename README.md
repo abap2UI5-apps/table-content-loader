@@ -18,6 +18,7 @@ Supported Formats: JSON, CSV
 #### Required Projects:
 * S-RTTI
 * abap2UI5
+* abap2xlsx (for xlsx support)
 
 #### TODO
 * CSV Handling
