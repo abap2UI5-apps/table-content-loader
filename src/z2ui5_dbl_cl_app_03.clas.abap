@@ -22,7 +22,7 @@ CLASS z2ui5_dbl_cl_app_03 DEFINITION
         file_size             TYPE string,
         file_entries          TYPE string,
         check_appwidthlimited TYPE abap_bool VALUE abap_true,
-        db_table              TYPE string VALUE 'z2ui5_dbl_t_01',
+        db_table              TYPE string VALUE 'SPFLI',
         db_table_entries      TYPE string,
       END OF ms_app.
 
@@ -87,9 +87,9 @@ CLASS z2ui5_dbl_cl_app_03 IMPLEMENTATION.
             FROM (ms_app-db_table)
             INTO ms_app-db_table_entries.
 
-            IF to_upper( ms_app-db_table(1) ) <>  `Z` AND to_upper( ms_app-db_table(1) ) <> `Y`.
-              client->message_box_display( `Only Tables in namespace Z or Y allowed` ).
-            ENDIF.
+*            IF to_upper( ms_app-db_table(1) ) <>  `Z` AND to_upper( ms_app-db_table(1) ) <> `Y`.
+*              client->message_box_display( `Only Tables in namespace Z or Y allowed` ).
+*            ENDIF.
 
             client->view_model_update( ).
           CATCH cx_root.
@@ -168,28 +168,24 @@ CLASS z2ui5_dbl_cl_app_03 IMPLEMENTATION.
                  )->toolbar_spacer(
                   )->label( `Shell`
                   )->switch( state = client->_bind_edit( ms_app-check_appwidthlimited )
-                  )->link(
-                      text = 'Project on GitHub'
-                      target = '_blank'
-                      href = `https://github.com/oblomov-dev/a2UI5-db_table_loader`
-                  )->get_parent(  )->get_parent( ).
+                  )->get_parent( )->get_parent( ).
     ENDIF.
 
     DATA(content) = page->simple_form( editable = `true` ).
 
-    content->label( `(2) Check DB Table`
+    content->label( `(1) Set DB Table`
     )->input( width = `30%` description =  `DB Table` value = client->_bind_edit( ms_app-db_table )
      )->label(
     )->button( text = `Go` width = `10%` press = client->_event( `DB_CHECK` )
     )->label(
     )->input( width = `30%` description = `DB Entries` value = client->_bind_edit( ms_app-db_table_entries ) enabled = abap_false
-    )->label( `(3) DB -> JSON`
+    )->label( `(2) DB -> JSON`
    )->button( text = `Go` width = `10%` press = client->_event( `PROCESS` )
-    )->label(
-    )->input( width = `30%` description = `Number of Entries` value = client->_bind_edit( ms_app-file_entries )  enabled = abap_false
-    )->label( `(4) Preview JSON`
+*    )->label(
+*    )->input( width = `30%` description = `Number of Entries` value = client->_bind_edit( ms_app-file_entries )  enabled = abap_false
+    )->label( `(3) Preview JSON`
      )->button( text = `Go` width = `10%` press = client->_event( `PREVIEW` )
-   )->label( `(5) Export`
+   )->label( `(4) Export`
    )->button( text = `Run` width = `10%` press = client->_event( `DOWNLOAD` )
    ).
 

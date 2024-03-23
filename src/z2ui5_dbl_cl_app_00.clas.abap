@@ -22,7 +22,7 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
       DATA(view) = z2ui5_cl_xml_view=>factory( ).
 
       DATA(page) = view->shell( )->page(
-              title          = 'abap2UI5 - DB Loader'
+              title          = 'abap2UI5 - Table Content Loader'
               navbuttonpress = client->_event( 'BACK' )
               shownavbutton  = abap_true ).
       page = page->vbox( ).
@@ -31,6 +31,7 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
          class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
          header    = `JSON File`
          subheader    = `Upload DB Content`
+          state  = 'Disabled'
          press     = client->_event( `z2ui5_dbl_cl_app_01` )
       )->get( )->tile_content(
         )->image_content( src = 'sap-icon://upload' ).
@@ -38,8 +39,8 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
       page->generic_tile(
             class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
             header    = `JSON Editor`
-            subheader    = `Upload DB Content`
-            press     = client->_event( `z2ui5_dbt_cl_app_03` )
+            subheader    = `Download DB Content`
+            press     = client->_event( `z2ui5_dbl_cl_app_03` )
          )->get( )->tile_content(
            )->image_content( src = 'sap-icon://download' ).
 
@@ -70,7 +71,8 @@ page = page->get_parent( )->hbox( ).
          class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
          header    = `XLSX Upload`
          subheader    = `to the Database`
-         press     = client->_event( `z2ui5_dbt_cl_app_05` )
+         state  = 'Disabled'
+         press     = client->_event( `z2ui5_dbl_cl_app_05` )
       )->get( )->tile_content(
         )->image_content( src = 'sap-icon://upload' ).
 
@@ -78,7 +80,7 @@ page = page->get_parent( )->hbox( ).
         class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
         header    = `XLSX Download`
         subheader    = `in XLSX Format`
-         press     = client->_event( `z2ui5_dbt_cl_app_06` )
+         press     = client->_event( `z2ui5_dbl_cl_app_06` )
       )->get( )->tile_content(
          )->image_content( src = 'sap-icon://download' ).
 
