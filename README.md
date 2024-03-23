@@ -2,7 +2,6 @@
 Upload, Edit & Download Table Content <br><br>
 _Supported Formats: JSON, CSV, XLSX_
 
-
 #### Features
 * Upload & Download Table Content (CSV, JSON, XLSX)
 * Table Content Editor
