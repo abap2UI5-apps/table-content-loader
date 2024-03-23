@@ -16,7 +16,7 @@ _Supported Formats: JSON, CSV, XLSX_
 * S/4 Private Cloud or On-Premise (ABAP for Cloud, Standard ABAP)
 * R/3 NetWeaver AS ABAP 7.50 or higher (Standard ABAP)
 
-_xlsx support based on abap2xlsx and runs on ABAP Standrad only_
+_XSLX support based on abap2xlsx and runs on ABAP Standrad only_
 
 #### Required Projects:
 * S-RTTI
