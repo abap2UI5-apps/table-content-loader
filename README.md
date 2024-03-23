@@ -1,12 +1,11 @@
 # Table Content Loader
-Upload, Edit & Download Table Content
-Supported Formats: JSON, CSV
+Upload, Edit & Download Table Content <br><br>
+___Supported Formats: JSON, CSV, XLSX___
 
 
 #### Features
-* Upload JSON & CSV Files
-* Download Table Entries in JSON & CSV Format
-* CSV & JSON Editor
+* Upload & Download Table Content (CSV, JSON, XLSX)
+* Table Content Editor
 * Data Preview
 * Browser-based
 
@@ -21,15 +20,16 @@ Supported Formats: JSON, CSV
 * abap2xlsx (for xlsx support)
 
 #### TODO
-* CSV Handling
-* XLSX Handling
-* Editor Functionality
+* CSV Upload & Download
+* JSON Download
+* XLSX Upload
 
 #### Contribution & Support
 Pull Requests are welcome! Whether you're fixing a bug, adding new functionality, or improving the documentation, your contributions are always appreciated. If you run into problems, feel free to open an issue.
 
 # Demo
-<img width="800" alt="image" src="https://github.com/oblomov-dev/a2UI5-db_table_loader/assets/102328295/e6e92a36-c41f-445e-a1f0-0aee7f589c35">
+<img width="800" alt="image" src="https://github.com/abap2UI5-apps/table-content-loader/assets/102328295/2f02b122-05f8-40ce-9d03-34fe38dfe57e">
+
 
 
 
