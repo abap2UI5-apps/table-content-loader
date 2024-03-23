@@ -8,6 +8,7 @@ ___Supported Formats: JSON, CSV, XLSX___
 * Table Content Editor
 * Data Preview
 * Browser-based
+* Popups for use in other abap2UI5 apps
 
 #### Compatibility:
 * S/4 Public Cloud (ABAP Cloud)
@@ -23,6 +24,7 @@ ___Supported Formats: JSON, CSV, XLSX___
 * CSV Upload & Download
 * JSON Download
 * XLSX Upload
+* Popups
 
 #### Contribution & Support
 Pull Requests are welcome! Whether you're fixing a bug, adding new functionality, or improving the documentation, your contributions are always appreciated. If you run into problems, feel free to open an issue.
