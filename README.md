@@ -28,7 +28,8 @@ ___Supported Formats: JSON, CSV, XLSX___
 Pull Requests are welcome! Whether you're fixing a bug, adding new functionality, or improving the documentation, your contributions are always appreciated. If you run into problems, feel free to open an issue.
 
 # Demo
-<img width="800" alt="image" src="https://github.com/abap2UI5-apps/table-content-loader/assets/102328295/2f02b122-05f8-40ce-9d03-34fe38dfe57e">
+<img width="800" alt="image" src="https://github.com/abap2UI5-apps/table-content-loader/assets/102328295/73e044dc-137d-49fe-b6ac-0247fb542a0f">
+
 
 
 
