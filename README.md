@@ -1,6 +1,6 @@
 # Table Content Loader
 Upload, Edit & Download Table Content <br><br>
-_Supported Formats: JSON, CSV, XLSX_
+_Supported Formats: JSON, CSV..._
 
 #### Features
 * Upload & Download Table Content (CSV, JSON, XLSX)
@@ -14,8 +14,6 @@ _Supported Formats: JSON, CSV, XLSX_
 * S/4 Public Cloud ABAP Environment (ABAP for Cloud)
 * S/4 Private Cloud or On-Premise (ABAP for Cloud, Standard ABAP)
 * R/3 NetWeaver AS ABAP 7.50 or higher (Standard ABAP)
-
-_XSLX support based on abap2xlsx and runs on ABAP Standard only_
 
 #### Required Projects:
 * S-RTTI
