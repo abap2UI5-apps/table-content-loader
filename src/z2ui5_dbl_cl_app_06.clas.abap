@@ -1,4 +1,4 @@
-CLASS z2ui5_dbt_cl_app_06 DEFINITION PUBLIC.
+CLASS z2ui5_dbl_cl_app_06 DEFINITION PUBLIC.
 
   PUBLIC SECTION.
 
@@ -24,8 +24,8 @@ CLASS z2ui5_dbt_cl_app_06 DEFINITION PUBLIC.
         check_download_pressed   TYPE abap_bool,
         t_tab                    TYPE REF TO data,
         max_rows                 TYPE i VALUE 10,
-        t_fcat                   TYPE z2ui5_dbt_cl_xlsx_wrapper=>ty_t_xlsx,
-        t_config                 TYPE STANDARD TABLE OF z2ui5_dbt_cl_xlsx_wrapper=>ty_s_xlsx_settings WITH EMPTY KEY,
+        t_fcat                   TYPE z2ui5_dbl_cl_xlsx_wrapper=>ty_t_xlsx,
+        t_config                 TYPE STANDARD TABLE OF z2ui5_dbl_cl_xlsx_wrapper=>ty_s_xlsx_settings WITH EMPTY KEY,
         t_config_head            TYPE STANDARD TABLE OF ty_s_config_head WITH EMPTY KEY,
         check_download_active    TYPE abap_bool,
         check_file_row_limit     TYPE abap_bool VALUE abap_true,
@@ -63,7 +63,63 @@ ENDCLASS.
 
 
 
-CLASS z2ui5_dbt_cl_app_06 IMPLEMENTATION.
+CLASS Z2UI5_DBL_CL_APP_06 IMPLEMENTATION.
+
+
+  METHOD create_file.
+
+    TRY.
+
+        DATA lr_tab TYPE REF TO data.
+        CREATE DATA lr_tab TYPE STANDARD TABLE OF (ms_draft-table_name).
+        FIELD-SYMBOLS <tab> TYPE table.
+        ASSIGN lr_tab->* TO <tab>.
+
+        IF ms_draft-check_file_row_limit = abap_true.
+
+          SELECT FROM (ms_draft-table_name)
+            FIELDS *
+            INTO CORRESPONDING FIELDS OF TABLE @<tab>
+            UP TO @ms_draft-file_max_rows ROWS.
+
+        ELSE.
+
+          SELECT FROM (ms_draft-table_name)
+            FIELDS *
+            INTO CORRESPONDING FIELDS OF TABLE @<tab>.
+
+        ENDIF.
+
+        DATA: lo_excel     TYPE REF TO zcl_excel,
+              lo_writer    TYPE REF TO zif_excel_writer,
+              lo_worksheet TYPE REF TO zcl_excel_worksheet.
+
+        " Creates active sheet
+        CREATE OBJECT lo_excel.
+
+        " Get active sheet
+        lo_worksheet = lo_excel->get_active_worksheet( ).
+        lo_worksheet->set_title( CONV #( ms_draft-t_config_head[ 1 ]-title ) ).
+
+        lo_worksheet->bind_table( ip_table          = <tab>
+                                  is_table_settings = ms_draft-t_config[ 1 ]
+                                  it_field_catalog  = ms_draft-t_fcat ).
+
+        lo_worksheet->freeze_panes( ip_num_rows = 1 ).
+
+        CREATE OBJECT lo_writer TYPE zcl_excel_writer_2007.
+        DATA(lv_result) = lo_writer->write_file( lo_excel ).
+        mv_file = z2ui5_cl_util=>conv_encode_x_base64( lv_result ).
+
+        ms_draft-file_rows = lines( <tab> ).
+        ms_draft-file_size = xstrlen( lv_result ) / 1000.
+
+      CATCH cx_root INTO DATA(lx).
+        client->message_box_display(
+            text = lx->get_text( )
+            type = 'error' ).
+    ENDTRY.
+  ENDMETHOD.
 
 
   METHOD load_table.
@@ -262,42 +318,6 @@ CLASS z2ui5_dbt_cl_app_06 IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD set_view_config_pos.
-
-    DATA(cont) = page->scroll_container(
-         height     = `100%`
-         width      = `100%`
-         vertical   = abap_true
-         horizontal = abap_true
-     ).
-
-    DATA(tab) = cont->table(
-            items = client->_bind_edit( ms_draft-t_fcat )
-       )->header_toolbar(
-           )->overflow_toolbar(
-               )->title( `Excel Fieldcatalog`
-               )->toolbar_spacer(
-               )->button( text = `Reset` press = client->_event( `RESET_FCAT` ) icon = `sap-icon://refresh` type = `Emphasized`
-      )->get_parent( )->get_parent( ).
-
-    DATA(lt_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_struc( ms_draft-t_fcat ).
-
-    DATA(lo_columns) = tab->columns( ).
-    LOOP AT lt_fields INTO DATA(lv_field) FROM 1.
-      lo_columns->column( )->text( lv_field-name ).
-    ENDLOOP.
-
-    DATA(lo_cells) = tab->items( )->column_list_item( )->cells( ).
-    LOOP AT lt_fields INTO lv_field FROM 1.
-      lo_cells->input( `{` && lv_field-name && `}` ).
-    ENDLOOP.
-
-  ENDMETHOD.
-
-  METHOD set_view_preview.
-
-
-  ENDMETHOD.
 
   METHOD set_view_config.
     .
@@ -353,6 +373,39 @@ CLASS z2ui5_dbt_cl_app_06 IMPLEMENTATION.
     ENDLOOP.
 
     lo_cells = tab->items( )->column_list_item( )->cells( ).
+    LOOP AT lt_fields INTO lv_field FROM 1.
+      lo_cells->input( `{` && lv_field-name && `}` ).
+    ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD set_view_config_pos.
+
+    DATA(cont) = page->scroll_container(
+         height     = `100%`
+         width      = `100%`
+         vertical   = abap_true
+         horizontal = abap_true
+     ).
+
+    DATA(tab) = cont->table(
+            items = client->_bind_edit( ms_draft-t_fcat )
+       )->header_toolbar(
+           )->overflow_toolbar(
+               )->title( `Excel Fieldcatalog`
+               )->toolbar_spacer(
+               )->button( text = `Reset` press = client->_event( `RESET_FCAT` ) icon = `sap-icon://refresh` type = `Emphasized`
+      )->get_parent( )->get_parent( ).
+
+    DATA(lt_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_struc( ms_draft-t_fcat ).
+
+    DATA(lo_columns) = tab->columns( ).
+    LOOP AT lt_fields INTO DATA(lv_field) FROM 1.
+      lo_columns->column( )->text( lv_field-name ).
+    ENDLOOP.
+
+    DATA(lo_cells) = tab->items( )->column_list_item( )->cells( ).
     LOOP AT lt_fields INTO lv_field FROM 1.
       lo_cells->input( `{` && lv_field-name && `}` ).
     ENDLOOP.
@@ -432,6 +485,12 @@ CLASS z2ui5_dbt_cl_app_06 IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD set_view_preview.
+
+
+  ENDMETHOD.
+
+
   METHOD z2ui5_if_app~main.
 
     me->client = client.
@@ -450,60 +509,4 @@ CLASS z2ui5_dbt_cl_app_06 IMPLEMENTATION.
     on_event( ).
 
   ENDMETHOD.
-
-  METHOD create_file.
-
-    TRY.
-
-        DATA lr_tab TYPE REF TO data.
-        CREATE DATA lr_tab TYPE STANDARD TABLE OF (ms_draft-table_name).
-        FIELD-SYMBOLS <tab> TYPE table.
-        ASSIGN lr_tab->* TO <tab>.
-
-        IF ms_draft-check_file_row_limit = abap_true.
-
-          SELECT FROM (ms_draft-table_name)
-            FIELDS *
-            INTO CORRESPONDING FIELDS OF TABLE @<tab>
-            UP TO @ms_draft-file_max_rows ROWS.
-
-        ELSE.
-
-          SELECT FROM (ms_draft-table_name)
-            FIELDS *
-            INTO CORRESPONDING FIELDS OF TABLE @<tab>.
-
-        ENDIF.
-
-        DATA: lo_excel     TYPE REF TO zcl_excel,
-              lo_writer    TYPE REF TO zif_excel_writer,
-              lo_worksheet TYPE REF TO zcl_excel_worksheet.
-
-        " Creates active sheet
-        CREATE OBJECT lo_excel.
-
-        " Get active sheet
-        lo_worksheet = lo_excel->get_active_worksheet( ).
-        lo_worksheet->set_title( CONV #( ms_draft-t_config_head[ 1 ]-title ) ).
-
-        lo_worksheet->bind_table( ip_table          = <tab>
-                                  is_table_settings = ms_draft-t_config[ 1 ]
-                                  it_field_catalog  = ms_draft-t_fcat ).
-
-        lo_worksheet->freeze_panes( ip_num_rows = 1 ).
-
-        CREATE OBJECT lo_writer TYPE zcl_excel_writer_2007.
-        DATA(lv_result) = lo_writer->write_file( lo_excel ).
-        mv_file = z2ui5_cl_util=>conv_encode_x_base64( lv_result ).
-
-        ms_draft-file_rows = lines( <tab> ).
-        ms_draft-file_size = xstrlen( lv_result ) / 1000.
-
-      CATCH cx_root INTO DATA(lx).
-        client->message_box_display(
-            text = lx->get_text( )
-            type = 'error' ).
-    ENDTRY.
-  ENDMETHOD.
-
 ENDCLASS.

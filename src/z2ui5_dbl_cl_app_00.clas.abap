@@ -12,7 +12,6 @@ CLASS z2ui5_dbl_cl_app_00 DEFINITION
 ENDCLASS.
 
 
-
 CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
 
 
@@ -26,8 +25,8 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
               title          = 'abap2UI5 - DB Loader'
               navbuttonpress = client->_event( 'BACK' )
               shownavbutton  = abap_true ).
-    page = page->vbox( ).
-    page = page->hbox( ).
+      page = page->vbox( ).
+      page = page->hbox( ).
       page->generic_tile(
          class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
          header    = `JSON File`
@@ -36,13 +35,15 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
       )->get( )->tile_content(
         )->image_content( src = 'sap-icon://upload' ).
 
-   page->generic_tile(
-         class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-         header    = `JSON Editor`
-         subheader    = `Upload DB Content`
-         press     = client->_event( `z2ui5_file_cl_app_01` )
-      )->get( )->tile_content(
-        )->image_content( src = 'sap-icon://upload' ).
+      page->generic_tile(
+            class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+            header    = `JSON Editor`
+            subheader    = `Upload DB Content`
+            press     = client->_event( `z2ui5_dbt_cl_app_03` )
+         )->get( )->tile_content(
+           )->image_content( src = 'sap-icon://download' ).
+
+page = page->get_parent( )->hbox( ).
 
       page->generic_tile(
          class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
@@ -54,64 +55,30 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
       )->get( )->tile_content(
         )->image_content( src = 'sap-icon://upload' ).
 
-   page->generic_tile(
-         class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-         header    = `CSV Editor`
-         subheader    = `Upload DB Content`
-         press     = client->_event( `z2ui5_file_cl_app_01` )
-         state  = 'Disabled'
-      )->get( )->tile_content(
-        )->image_content( src = 'sap-icon://upload' ).
-
-    page = page->get_parent( )->hbox( ).
-
       page->generic_tile(
-        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-        header    = `JSON File`
-        subheader    = `Download DB Content`
-         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
-      )->get( )->tile_content(
-         )->image_content( src = 'sap-icon://download' ).
-
-      page->generic_tile(
-        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-        header    = `JSON Editor`
-        subheader    = `Download DB Content`
-         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
-      )->get( )->tile_content(
-         )->image_content( src = 'sap-icon://download' ).
-
-      page->generic_tile(
-        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-        header    = `CSV File`
-        subheader    = `Download DB Content`
-         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
+            class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
+            header    = `CSV Editor`
+            subheader    = `Upload DB Content`
+            press     = client->_event( `z2ui5_file_cl_app_01` )
             state  = 'Disabled'
-      )->get( )->tile_content(
-         )->image_content( src = 'sap-icon://download' ).
+         )->get( )->tile_content(
+           )->image_content( src = 'sap-icon://upload' ).
 
-      page->generic_tile(
-        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-        header    = `CSV Editor`
-        subheader    = `Download DB Content`
-         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
-            state  = 'Disabled'
-      )->get( )->tile_content(
-         )->image_content( src = 'sap-icon://download' ).
+      page = page->get_parent( )->hbox( ).
 
       page->generic_tile(
          class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-         header    = `Upload Excel Files`
+         header    = `XLSX Upload`
          subheader    = `to the Database`
-         press     = client->_event( `z2ui5_xlsx_cl_app_01` )
+         press     = client->_event( `z2ui5_dbt_cl_app_05` )
       )->get( )->tile_content(
         )->image_content( src = 'sap-icon://upload' ).
 
       page->generic_tile(
         class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-        header    = `Download DB Tables`
+        header    = `XLSX Download`
         subheader    = `in XLSX Format`
-         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
+         press     = client->_event( `z2ui5_dbt_cl_app_06` )
       )->get( )->tile_content(
          )->image_content( src = 'sap-icon://download' ).
 

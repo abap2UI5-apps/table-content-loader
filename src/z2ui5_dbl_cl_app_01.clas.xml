@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_DBL_CL_APP_01</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>dbt - upload file to database</DESCRIPT>
+    <DESCRIPT>dbt - upload json</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
