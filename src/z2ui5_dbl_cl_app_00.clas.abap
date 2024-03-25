@@ -12,9 +12,15 @@ CLASS z2ui5_dbl_cl_app_00 DEFINITION
 ENDCLASS.
 
 
-CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
+
+CLASS Z2UI5_DBL_CL_APP_00 IMPLEMENTATION.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method Z2UI5_DBL_CL_APP_00->Z2UI5_IF_APP~MAIN
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] CLIENT                         TYPE REF TO Z2UI5_IF_CLIENT
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD z2ui5_if_app~main.
 
     IF client->get( )-check_on_navigated = abap_true.
@@ -24,7 +30,11 @@ CLASS z2ui5_dbl_cl_app_00 IMPLEMENTATION.
       DATA(page) = view->shell( )->page(
               title          = 'abap2UI5 - Table Content Loader'
               navbuttonpress = client->_event( 'BACK' )
-              shownavbutton  = abap_true ).
+              shownavbutton  = abap_true
+          )->header_content(
+                )->overflow_toolbar(
+                )->link( text = 'Project on GitHub' target = '_blank' href = 'https://github.com/abap2ui5-apps/table_content_loader'
+    )->get_parent( )->get_parent( ).
       page = page->vbox( ).
       page = page->hbox( ).
       page->generic_tile(
