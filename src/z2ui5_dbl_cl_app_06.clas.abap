@@ -232,7 +232,7 @@ CLASS Z2UI5_DBL_CL_APP_06 IMPLEMENTATION.
         set_view( ).
 
       WHEN `NEW`.
-        DATA(lo_app) = z2ui5_cl_popup_input_value=>factory(
+        DATA(lo_app) = z2ui5_cl_pop_input_val=>factory(
             title   = `Create a New XLSX Draft`
             text    = `Database Table:`
             val     = ms_draft-table_name ).
@@ -337,7 +337,7 @@ CLASS Z2UI5_DBL_CL_APP_06 IMPLEMENTATION.
                )->button( text = `Reset` press = client->_event( `RESET_CONFIG` ) icon = `sap-icon://refresh` type = `Emphasized`
       )->get_parent( )->get_parent( ).
 
-    DATA(lt_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_struc( ms_draft-t_config ).
+    DATA(lt_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_any( ms_draft-t_config ).
 
     DATA(lo_columns) = tab->columns( ).
     LOOP AT lt_fields INTO DATA(lv_field) FROM 1.
@@ -398,7 +398,7 @@ CLASS Z2UI5_DBL_CL_APP_06 IMPLEMENTATION.
                )->button( text = `Reset` press = client->_event( `RESET_FCAT` ) icon = `sap-icon://refresh` type = `Emphasized`
       )->get_parent( )->get_parent( ).
 
-    DATA(lt_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_struc( ms_draft-t_fcat ).
+    DATA(lt_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_any( ms_draft-t_fcat ).
 
     DATA(lo_columns) = tab->columns( ).
     LOOP AT lt_fields INTO DATA(lv_field) FROM 1.
@@ -468,7 +468,7 @@ CLASS Z2UI5_DBL_CL_APP_06 IMPLEMENTATION.
                  )->button( text = `Reset` press = client->_event( `LOAD` ) icon = `sap-icon://refresh` type = `Emphasized`
         )->get_parent( )->get_parent( ).
 
-      DATA(lt_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_struc( <tab> ).
+      DATA(lt_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_any( <tab> ).
 
       DATA(lo_columns) = tab->columns( ).
       LOOP AT lt_fields INTO DATA(lv_field) FROM 1.

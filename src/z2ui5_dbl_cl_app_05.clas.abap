@@ -23,7 +23,9 @@ CLASS z2ui5_dbl_cl_app_05 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_dbl_cl_app_05 IMPLEMENTATION.
+
+CLASS Z2UI5_DBL_CL_APP_05 IMPLEMENTATION.
+
 
   METHOD ui5_on_event.
     TRY.
@@ -108,7 +110,7 @@ CLASS z2ui5_dbl_cl_app_05 IMPLEMENTATION.
                         customtextoff = 'View'
           )->get_parent( )->get_parent( ).
 
-      DATA(lr_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_struc( <tab> ).
+      DATA(lr_fields) = z2ui5_cl_util=>rtti_get_t_attri_by_any( <tab> ).
       DATA(lo_cols) = tab->columns( ).
       LOOP AT lr_fields REFERENCE INTO DATA(lr_col).
         lo_cols->column( )->text( lr_col->name ).
