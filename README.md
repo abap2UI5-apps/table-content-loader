@@ -1,6 +1,6 @@
 # Table Content Loader
 Upload, Edit & Download Table Content <br><br>
-_Supported Formats: JSON, CSV..._
+_Supported Formats: JSON, CSV, XLSX..._
 
 #### Features
 * Upload & Download Table Content
