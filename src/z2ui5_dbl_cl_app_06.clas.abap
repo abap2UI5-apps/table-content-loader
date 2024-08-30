@@ -139,7 +139,7 @@ CLASS Z2UI5_DBL_CL_APP_06 IMPLEMENTATION.
 
     TRY.
         DATA(lo_prev) = client->get_app( client->get(  )-s_draft-id_prev_app ).
-        ms_draft-table_name = CAST z2ui5_cl_popup_input_value( lo_prev )->result( )-value.
+        ms_draft-table_name = CAST z2ui5_cl_pop_input_val( lo_prev )->result( )-value.
         ms_draft-check_load_pressed = abap_true.
 
         CREATE DATA ms_draft-t_tab TYPE STANDARD TABLE OF (ms_draft-table_name).
@@ -365,7 +365,7 @@ CLASS Z2UI5_DBL_CL_APP_06 IMPLEMENTATION.
                )->button( text = `Reset` press = client->_event( `RESET_FCAT` ) icon = `sap-icon://refresh` type = `Emphasized`
       )->get_parent( )->get_parent( ).
 
-    lt_fields = z2ui5_cl_util=>rtti_get_t_attri_by_struc( ms_draft-t_config_head ).
+    lt_fields = z2ui5_cl_util=>rtti_get_t_attri_by_any( ms_draft-t_config_head ).
 
     lo_columns = tab->columns( ).
     LOOP AT lt_fields INTO lv_field FROM 1.
