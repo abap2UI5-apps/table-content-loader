@@ -124,7 +124,7 @@ CLASS Z2UI5_DBL_CL_APP_04 IMPLEMENTATION.
           )->get_parent( )->get_parent( ).
 
 
-      DATA(lr_fields) = value string_table( for row in z2ui5_cl_util=>rtti_get_t_attri_by_struc( <tab> ) ( row-name ) ).
+      DATA(lr_fields) = value string_table( for row in z2ui5_cl_util=>rtti_get_t_attri_by_any( <tab> ) ( row-name ) ).
       DATA(lo_cols) = tab->columns( ).
       LOOP AT lr_fields REFERENCE INTO DATA(lr_col).
         lo_cols->column( )->text( lr_col->* ).
