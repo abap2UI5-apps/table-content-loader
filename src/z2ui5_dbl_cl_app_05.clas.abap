@@ -45,7 +45,7 @@ CLASS Z2UI5_DBL_CL_APP_05 IMPLEMENTATION.
             SPLIT lv_data AT `,` INTO lv_dummy lv_data.
 
             DATA(lv_xdata) = z2ui5_cl_util=>conv_decode_x_base64( lv_data ).
-            mr_table = z2ui5_dbl_cl_xlsx_wrapper=>get_table_by_xlsx( lv_xdata ).
+            mr_table = z2ui5add_cl_abap2xlsx_api=>get_table_by_xlsx( lv_xdata ).
             client->message_box_display( `XLSX loaded to table` ).
 
             ui5_view_main_display( ).
@@ -89,7 +89,7 @@ CLASS Z2UI5_DBL_CL_APP_05 IMPLEMENTATION.
       FIELD-SYMBOLS <tab> TYPE table.
       ASSIGN mr_table->* TO <tab>.
       mv_check_download = abap_false.
-      DATA(lv_xlsx) = z2ui5_dbl_cl_xlsx_wrapper=>get_xlsx_by_table( <tab> ).
+      DATA(lv_xlsx) = z2ui5add_cl_abap2xlsx_api=>get_xlsx_by_table( <tab> ).
       DATA(lv_base) = z2ui5_cl_util=>conv_encode_x_base64( lv_xlsx ).
       view->_generic( ns = `html` name = `iframe` t_prop = VALUE #( ( n = `src` v = `data:text/csv;base64,` && lv_base ) ( n = `hidden` v = `hidden` ) ) ).
     ENDIF.
