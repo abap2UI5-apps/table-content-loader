@@ -15,10 +15,10 @@ _Supported Formats: JSON, CSV, XLSX..._
 * S/4 Private Cloud or On-Premise (ABAP for Cloud, Standard ABAP)
 * R/3 NetWeaver AS ABAP 7.50 or higher (Standard ABAP)
 
-#### Required Projects:
+#### Dependencies:
 * S-RTTI
 * abap2UI5
-* abap2xlsx (for xlsx support)
+* abap2xlsx & abap2xlsx-ui (for xlsx support)
 
 #### TODO
 * CSV Upload & Download
